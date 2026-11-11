@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7ff">
+<title>StudySpark Global — Student Learning Hub</title>
+<style>
+:root{--ink:#17213b;--muted:#64708a;--line:#e5e9f3;--paper:#fff;--bg:#f5f7ff;--blue:#4f62e8;--blue2:#eef0ff;--teal:#0d9488;--shadow:0 12px 36px rgba(31,45,88,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(120deg,#202b59,#4f62e8);color:white;padding:28px 20px 24px}
+.wrap{max-width:980px;margin:auto}header .topline{display:flex;align-items:center;gap:12px;font-size:13px;opacity:.85;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.logo{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#ffffff20;font-size:21px}
+h1{font-size:clamp(27px,5vw,38px);line-height:1.1;margin:15px 0 8px;letter-spacing:-.04em}
+header p{margin:0;color:#e4e8ff;max-width:640px}
+main{max-width:980px;margin:24px auto;padding:0 18px 60px}
+.tabs{display:flex;gap:8px;background:#e9ecf8;padding:6px;border-radius:15px;width:max-content;max-width:100%;margin-bottom:20px}
+.tab{border:0;background:transparent;color:#5e6985;font-weight:700;padding:11px 17px;border-radius:11px;cursor:pointer;font-size:14px}
+.tab[aria-selected=true]{background:white;color:var(--blue);box-shadow:0 2px 8px #202b5912}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+h2{font-size:21px;letter-spacing:-.025em;margin:0 0 5px}h3{font-size:16px;margin:0 0 10px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 17px}
+label{font-size:13px;font-weight:750;display:block;margin:0 0 7px;color:#3e4966}
+textarea,input{width:100%;border:1px solid #dce2ef;border-radius:12px;padding:13px 14px;font:inherit;color:var(--ink);background:#fcfdff;outline:none}
+textarea{min-height:180px;resize:vertical}input:focus,textarea:focus{border-color:#7c89f2;box-shadow:0 0 0 3px #4f62e81b}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:13px}
+button{font:inherit}
+.primary,.secondary,.ghost{border:0;border-radius:11px;padding:11px 16px;font-weight:750;cursor:pointer}
+.primary{background:var(--blue);color:white}.primary:hover{background:#3f50d0}
+.secondary{background:var(--blue2);color:var(--blue)}.ghost{background:#f1f3f8;color:#59647e}
+button:disabled{opacity:.4;cursor:not-allowed}
+.status{font-size:13px;color:var(--muted);margin-top:10px;min-height:20px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0 12px}
+.deck-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:13px}
+.flip-card{min-height:160px;perspective:900px;cursor:pointer;outline:none}
+.flip-inner{position:relative;min-height:160px;transition:transform .45s;transform-style:preserve-3d}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line);border-radius:16px;padding:18px;background:white;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 5px 18px #1d2c5510}
+.face.back{transform:rotateY(180deg);background:#f0fbf9;border-color:#ccece6}
+.face small{color:var(--muted);font-weight:750;text-transform:uppercase;letter-spacing:.07em;font-size:10px}
+.face strong{font-size:17px;line-height:1.35}
+.hint{font-size:12px;color:var(--muted)}
+.quiz-q{border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+.quiz-q p{font-weight:750;margin:0 0 10px}
+.option{display:block;padding:9px 11px;border-radius:9px;margin:5px 0;background:#f7f8fc;cursor:pointer;font-size:14px}
+.option input{width:auto;margin-right:8px}
+.feedback{font-size:13px;margin-top:8px;font-weight:700}
+.saved-list{display:flex;flex-wrap:wrap;gap:8px}
+.saved{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 11px;font-size:13px;cursor:pointer;color:#4e5a76}
+.saved:hover{border-color:#9ba5f5;color:var(--blue)}
+.math-layout{display:grid;grid-template-columns:1fr;gap:16px}
+.step{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:0}.num{flex:0 0 29px;height:29px;border-radius:50%;background:var(--blue2);color:var(--blue);font-weight:800;display:grid;place-items:center;font-size:13px}
+.step strong{display:block;margin-bottom:3px}.step p{margin:0;color:var(--muted);font-size:14px}
+.answer{padding:15px 17px;background:#effaf7;border:1px solid #cceee4;border-radius:13px;margin-top:15px}
+.answer b{color:#087c70}
+.examples{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.example{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:white;color:#5b6681;font-size:12px;cursor:pointer}
+footer{text-align:center;color:#8490a8;font-size:12px;padding:16px}
+
+.exam-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}.exam-controls select{width:100%;border:1px solid #dce2ef;border-radius:12px;padding:12px;background:#fcfdff;color:var(--ink);font:inherit}.source-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.source-link{display:block;text-decoration:none;border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--blue);font-weight:750;background:#fbfcff}.source-link small{display:block;color:var(--muted);font-weight:500;margin-top:4px}.note-card li{margin:7px 0;color:#56617a;font-size:14px}.premium-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.premium-tile{border:1px solid var(--line);border-radius:15px;padding:18px}.premium-tile strong{font-size:19px}.premium-tile p{font-size:14px;color:var(--muted);min-height:60px}.premium-highlight{border-color:#bfc7ff;background:#f7f8ff}.pill{display:inline-block;border-radius:99px;padding:5px 10px;font-size:11px;font-weight:800}.free-pill{background:#e5f7ef;color:#087c55}.soon-pill{background:#eef0ff;color:#4f62e8}
+@media(max-width:650px){.exam-controls{grid-template-columns:1fr}.tabs{width:100%;overflow-x:auto}.tab{white-space:nowrap;flex:0 0 auto}}
+
+@media(max-width:560px){header{padding:22px 17px}main{padding:0 12px 40px}.card{padding:17px}.tab{padding:10px 12px;font-size:13px}.tabs{width:100%}.tab{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="topline"><span class="logo">✦</span> STUDYSPARK GLOBAL · WORLDWIDE LEARNING</div>
+  <h1>Learn it. Practise it. Own it.</h1>
+  <p>Study tools, step-by-step maths, and official exam information for learners around the world.</p>
+</div></header>
+<main>
+  <nav class="tabs" aria-label="Study tools">
+    <button class="tab" role="tab" aria-selected="true" data-tab="notes">✦ Notes to Flashcards</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="solver">∑ Step-by-Step Solver</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="exams">🌍 Global Exams</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="premium">★ Premium</button>
+  </nav>
+
+  <section class="panel active" id="notes" role="tabpanel">
+    <div class="card">
+      <h2>Make a study deck</h2>
+      <p class="sub">Paste your notes below. Use short facts or one fact per line for the clearest cards.</p>
+      <label for="notesInput">Your study notes</label>
+      <textarea id="notesInput" placeholder="Example:
+The heart pumps blood around the body.
+The lungs help us breathe.
+Plants make food using sunlight through photosynthesis."></textarea>
+      <div class="actions"><button class="primary" id="generateBtn">Generate flashcards + quiz</button><button class="ghost" id="clearNotes">Clear</button></div>
+      <div class="status" id="notesStatus" aria-live="polite"></div>
+    </div>
+    <div id="deckArea" hidden>
+      <div class="section-head"><div><h2>Your flashcards</h2><p class="sub" style="margin:3px 0 0">Tap a card to flip it and reveal the answer.</p></div><button class="secondary" id="saveDeck">Save deck</button></div>
+      <div class="deck-grid" id="deckGrid"></div>
+      <div class="card" style="margin-top:20px">
+        <div class="section-head" style="margin-top:0"><div><h2>Quick quiz</h2><p class="sub" style="margin:3px 0 0">Five multiple-choice questions based on your notes.</p></div><span class="hint">5 QUESTIONS</span></div>
+        <div id="quizArea"></div>
+        <div class="actions"><button class="primary" id="markQuiz">Mark my quiz</button><button class="secondary" id="retryQuiz">Try again</button></div>
+        <div class="status" id="quizStatus" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Recent saved decks</h3><p class="sub">Your last five decks are saved on this device.</p>
+      <div class="saved-list" id="savedDecks"><span class="hint">No saved decks yet.</span></div>
+    </div>
+  </section>
+
+
+  <section class="panel" id="exams" role="tabpanel">
+    <div class="card">
+      <h2>Find exams for your country</h2>
+      <p class="sub">Choose a country, grade and year. StudySpark links you to official education departments and examination boards where available.</p>
+      <div class="exam-controls">
+        <div><label for="countrySelect">Country</label><select id="countrySelect"></select></div>
+        <div><label for="gradeSelect">Grade / level</label><select id="gradeSelect"></select></div>
+        <div><label for="examYear">Year</label><select id="examYear"><option>2026</option><option>2027</option><option>2025</option><option>2024</option><option>2023</option></select></div>
+      </div>
+      <div class="actions"><button class="primary" id="futureExamBtn">Find future exam dates</button><button class="secondary" id="pastPaperBtn">Find past exam papers</button></div>
+      <div class="status" id="examStatus" aria-live="polite">Select your country and grade to get started.</div>
+    </div>
+    <div class="card">
+      <h3>Official sources for selected countries</h3>
+      <p class="sub">These are starting points. Exam schedules can be national, regional, state-based or set by individual exam boards.</p>
+      <div id="officialSources" class="source-list"></div>
+    </div>
+    <div class="card note-card">
+      <h3>How StudySpark keeps exam information reliable</h3>
+      <ul>
+        <li>Only treat dates as confirmed when an official ministry or exam board has published them.</li>
+        <li>If a timetable is not published, show “Not yet announced” rather than guessing.</li>
+        <li>Past papers belong to their examination boards. StudySpark links to official sources instead of copying protected papers.</li>
+        <li>Some countries organise exams by state, province, school or exam board, so a country-wide date may not exist.</li>
+      </ul>
+      <p class="hint">This first version is an official-source finder, not a live worldwide exam database. Always check the linked source for the latest timetable.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="premium" role="tabpanel">
+    <div class="card">
+      <h2>StudySpark Premium</h2>
+      <p class="sub">A preview of extra learning features planned for a future version.</p>
+      <div class="premium-grid">
+        <div class="premium-tile"><strong>Free</strong><p>Notes to flashcards, quizzes, maths solver and official exam-source finder.</p><span class="pill free-pill">Available now</span></div>
+        <div class="premium-tile premium-highlight"><strong>Premium</strong><p>Planned: larger study decks, extra practice sets, progress reports and custom revision planners.</p><span class="pill soon-pill">Coming soon</span></div>
+      </div>
+      <p class="hint" style="margin-top:16px">This demo does not collect payments or store payment details. Before offering paid memberships, involve a parent or guardian and set up secure payment and privacy arrangements with their help.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="solver" role="tabpanel">
+    <div class="card">
+      <h2>Let's solve it together</h2>
+      <p class="sub">Enter an arithmetic expression, a one-variable linear equation, or a simple word problem. Works offline for supported questions.</p>
+      <label for="mathInput">Math question</label>
+      <input id="mathInput" autocomplete="off" placeholder="e.g. 3x + 5 = 20  or  (12 + 8) ÷ 4">
+      <div class="examples">
+        <button class="example" data-example="3x + 5 = 20">3x + 5 = 20</button>
+        <button class="example" data-example="2(x + 4) = 18">2(x + 4) = 18</button>
+        <button class="example" data-example="(12 + 8) / 4">(12 + 8) ÷ 4</button>
+        <button class="example" data-example="A notebook costs R12. What do 4 notebooks cost?">Word problem</button>
+      </div>
+      <div class="actions"><button class="primary" id="solveBtn">Build my steps</button><button class="ghost" id="clearMath">Clear</button></div>
+      <div class="status" id="mathStatus" aria-live="polite"></div>
+    </div>
+    <div class="card" id="stepsCard" hidden>
+      <h2>Your solution path</h2><p class="sub" id="problemLabel"></p>
+      <div id="stepsList"></div>
+      <div class="actions"><button class="primary" id="nextStep">Reveal next step</button><button class="secondary" id="showAll">Show all steps</button></div>
+      <div class="answer" id="finalAnswer" hidden></div>
+    </div>
+    <div class="card">
+      <h3>What can it solve?</h3>
+      <p class="sub" style="margin-bottom:0">Arithmetic with brackets and +, −, ×, ÷; linear equations with one variable (such as 3x + 5 = 20); and simple word problems that clearly describe one operation. It explains supported formats and will tell you when a question is too advanced or ambiguous.</p>
+    </div>
+  </section>
+</main>
+<footer>StudySpark Global · Study decks stay in this browser · Maths solving works offline · Exam information links to official sources</footer>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let currentDeck = null, currentSteps = [], visibleSteps = 0;
+
+  document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b===btn)));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===btn.dataset.tab));
+  }));
+
+  function splitFacts(raw) {
+    return raw.replace(/\r/g,'').split(/\n+|(?<=[.!?])\s+/).map(s=>s.trim()).filter(s=>s.length>18).slice(0,40);
+  }
+  function makeCard(sentence) {
+    const s=sentence.replace(/[.!?]+$/,'').trim();
+    let m=s.match(/^(.{2,65}?)\s+(is|are|was|were|means|refers to|consists of|has|have|uses|helps|causes|contains|include|includes)\s+(.+)$/i);
+    if(m) return {front:`What ${m[2].toLowerCase()==='is'?'is':'does'} ${m[1]} ${m[2].toLowerCase()}?`,back:m[3]};
+    m=s.match(/^(.{2,65}?)\s*[:–-]\s*(.{3,})$/);
+    if(m) return {front:`What do you know about ${m[1]}?`,back:m[2]};
+    const words=s.split(/\s+/);
+    if(words.length>5) {
+      const cut=Math.max(2,Math.min(words.length-2,Math.floor(words.length*.48)));
+      return {front:`Complete this fact: ${words.slice(0,cut).join(' ')} …`,back:words.slice(cut).join(' ')};
+    }
+    return {front:`Explain: ${s}`,back:s};
+  }
+  function buildQuiz(cards) {
+    const pool=cards.filter(c=>c.front&&c.back);
+    return Array.from({length:5},(_,i)=>{
+      const c=pool[i%pool.length], wrong=pool.filter((_,j)=>j!==i%pool.length).map(x=>x.back);
+      const choices=[c.back,...wrong.slice(0,3)];
+      while(choices.length<4) choices.push(`None of these`);
+      const shuffled=choices.slice(0,4).sort(()=>Math.random()-.5);
+      return {q:c.front,a:c.back,choices:shuffled};
+    });
+  }
+  function renderDeck(deck) {
+    currentDeck=deck; $('deckArea').hidden=false;
+    $('deckGrid').innerHTML=deck.cards.map((c,i)=>`<div class="flip-card" tabindex="0" role="button" aria-label="Flashcard ${i+1}. Tap to flip"><div class="flip-inner"><div class="face"><small>QUESTION ${i+1}</small><strong>${esc(c.front)}</strong><span class="hint">Tap to reveal ↻</span></div><div class="face back"><small>ANSWER</small><strong>${esc(c.back)}</strong><span class="hint">Tap to flip back ↻</span></div></div></div>`).join('');
+    document.querySelectorAll('.flip-card').forEach(card=>{
+      const flip=()=>card.classList.toggle('flipped');
+      card.addEventListener('click',flip);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip();}});
+    });
+    $('quizArea').innerHTML=deck.quiz.map((q,i)=>`<div class="quiz-q"><p>${i+1}. ${esc(q.q)}</p>${q.choices.map(ch=>`<label class="option"><input type="radio" name="q${i}" value="${esc(ch)}">${esc(ch)}</label>`).join('')}<div class="feedback" id="fb${i}"></div></div>`).join('');
+    $('quizStatus').textContent='';
+  }
+  $('generateBtn').addEventListener('click',()=>{
+    const facts=splitFacts($('notesInput').value);
+    if(!facts.length){$('notesStatus').textContent='Please paste a few study facts (one per line works best).';return;}
+    const cards=facts.map(makeCard);
+    const quiz=buildQuiz(cards);
+    renderDeck({title:'Study deck',created:new Date().toISOString(),cards,quiz});
+    $('notesStatus').textContent=`Created ${cards.length} flashcards and a 5-question quiz.`;
+    $('deckArea').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  $('clearNotes').addEventListener('click',()=>{$('notesInput').value='';$('notesStatus').textContent='';});
+  $('markQuiz').addEventListener('click',()=>{
+    if(!currentDeck)return;let score=0;
+    currentDeck.quiz.forEach((q,i)=>{
+      const selected=document.querySelector(`input[name="q${i}"]:checked`);
+      const ok=!!selected&&selected.value===q.a;if(ok)score++;
+      $('fb'+i).textContent=selected?(ok?'✓ Correct!':'Not quite — answer: '+q.a):'Choose an answer first.';
+      $('fb'+i).style.color=ok?'#087c70':'#b45309';
+    });
+    $('quizStatus').textContent=`You scored ${score} out of 5. ${score===5?'Excellent work!': 'Review the cards and try again.'}`;
+  });
+  $('retryQuiz').addEventListener('click',()=>{if(currentDeck){currentDeck.quiz=buildQuiz(currentDeck.cards);renderDeck(currentDeck);}});
+  function getSaved(){try{return JSON.parse(localStorage.getItem('studyspark_decks')||'[]')}catch{return []}}
+  function refreshSaved(){
+    const list=getSaved();$('savedDecks').innerHTML=list.length?list.map((d,i)=>`<button class="saved" data-index="${i}">${esc(d.name)} · ${d.cards.length} cards</button>`).join(''):'<span class="hint">No saved decks yet.</span>';
+    document.querySelectorAll('.saved').forEach(b=>b.addEventListener('click',()=>renderDeck(list[Number(b.dataset.index)])));
+  }
+  $('saveDeck').addEventListener('click',()=>{
+    if(!currentDeck)return;const name=prompt('Name this deck:', 'My study deck');if(name===null)return;
+    const list=getSaved();list.unshift({...currentDeck,name:name.trim()||'My study deck'});
+    localStorage.setItem('studyspark_decks',JSON.stringify(list.slice(0,5)));refreshSaved();$('notesStatus').textContent='Deck saved on this device.';
+  });
+  refreshSaved();
+
+  // Global country, grade and official exam-source finder. Dates are never invented.
+  const countries = `Afghanistan|Albania|Algeria|Andorra|Angola|Antigua and Barbuda|Argentina|Armenia|Australia|Austria|Azerbaijan|Bahamas|Bahrain|Bangladesh|Barbados|Belarus|Belgium|Belize|Benin|Bhutan|Bolivia|Bosnia and Herzegovina|Botswana|Brazil|Brunei|Bulgaria|Burkina Faso|Burundi|Cabo Verde|Cambodia|Cameroon|Canada|Central African Republic|Chad|Chile|China|Colombia|Comoros|Congo (Republic)|Costa Rica|Côte d’Ivoire|Croatia|Cuba|Cyprus|Czechia|Democratic Republic of the Congo|Denmark|Djibouti|Dominica|Dominican Republic|Ecuador|Egypt|El Salvador|Equatorial Guinea|Eritrea|Estonia|Eswatini|Ethiopia|Fiji|Finland|France|Gabon|Gambia|Georgia|Germany|Ghana|Greece|Grenada|Guatemala|Guinea|Guinea-Bissau|Guyana|Haiti|Honduras|Hungary|Iceland|India|Indonesia|Iran|Iraq|Ireland|Israel|Italy|Jamaica|Japan|Jordan|Kazakhstan|Kenya|Kiribati|Kuwait|Kyrgyzstan|Laos|Latvia|Lebanon|Lesotho|Liberia|Libya|Liechtenstein|Lithuania|Luxembourg|Madagascar|Malawi|Malaysia|Maldives|Mali|Malta|Marshall Islands|Mauritania|Mauritius|Mexico|Micronesia|Moldova|Monaco|Mongolia|Montenegro|Morocco|Mozambique|Myanmar|Namibia|Nauru|Nepal|Netherlands|New Zealand|Nicaragua|Niger|Nigeria|North Korea|North Macedonia|Norway|Oman|Pakistan|Palau|Palestine|Panama|Papua New Guinea|Paraguay|Peru|Philippines|Poland|Portugal|Qatar|Romania|Russia|Rwanda|Saint Kitts and Nevis|Saint Lucia|Saint Vincent and the Grenadines|Samoa|San Marino|São Tomé and Príncipe|Saudi Arabia|Senegal|Serbia|Seychelles|Sierra Leone|Singapore|Slovakia|Slovenia|Solomon Islands|Somalia|South Africa|South Korea|South Sudan|Spain|Sri Lanka|Sudan|Suriname|Sweden|Switzerland|Syria|Taiwan|Tajikistan|Tanzania|Thailand|Timor-Leste|Togo|Tonga|Trinidad and Tobago|Tunisia|Türkiye|Turkmenistan|Tuvalu|Uganda|Ukraine|United Arab Emirates|United Kingdom|United States|Uruguay|Uzbekistan|Vanuatu|Vatican City|Venezuela|Vietnam|Yemen|Zambia|Zimbabwe`.split('|');
+  const countrySelect=$('countrySelect'), gradeSelect=$('gradeSelect');
+  if(countrySelect){
+    countrySelect.innerHTML=countries.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    countrySelect.value='South Africa';
+    gradeSelect.innerHTML=Array.from({length:12},(_,i)=>`<option value="Grade ${i+1}">Grade ${i+1}</option>`).join('')+'<option value="Early childhood / pre-primary">Early childhood / pre-primary</option><option value="Vocational / technical">Vocational / technical</option><option value="University / college">University / college</option><option value="Other level">Other level</option>';
+    const sources={
+      'South Africa':[{name:'Department of Basic Education',url:'https://www.education.gov.za/',detail:'National exam timetables, school calendars and Grade 12 past papers.'}],
+      'United Kingdom':[{name:'Pearson Edexcel exam timetables',url:'https://qualifications.pearson.com/en/support/support-topics/exams/exam-timetables.html',detail:'GCSE, International GCSE and A level timetables.'},{name:'GOV.UK education and exams',url:'https://www.gov.uk/government/organisations/department-for-education',detail:'Government education information; exam boards publish their own timetables.'}],
+      'Sri Lanka':[{name:'Department of Examinations',url:'https://www.exams.gov.lk/examcalendar',detail:'Official examination calendar and timetable downloads.'}],
+      'Qatar':[{name:'Ministry of Education and Higher Education',url:'https://www.edu.gov.qa/en/Content/TestsTimetable',detail:'School test timetables and academic-year schedules.'}],
+      'India':[{name:'Central Board of Secondary Education',url:'https://www.cbse.gov.in/',detail:'CBSE official notices, examination schedules and academic resources.'}],
+      'New Zealand':[{name:'New Zealand Qualifications Authority',url:'https://www.nzqa.govt.nz/',detail:'National qualification and assessment information.'}],
+      'Kenya':[{name:'Kenya National Examinations Council',url:'https://www.knec.ac.ke/',detail:'National examination and assessment information.'}],
+      'Nigeria':[{name:'West African Examinations Council',url:'https://www.waecnigeria.org/',detail:'WAEC examination notices and candidate resources.'}],
+      'Ghana':[{name:'West African Examinations Council Ghana',url:'https://waecgh.org/',detail:'Examination notices and candidate resources.'}],
+      'Pakistan':[{name:'Federal Board of Intermediate and Secondary Education',url:'https://www.fbise.edu.pk/',detail:'Federal Board examination schedules and past-paper resources.'}],
+      'Bangladesh':[{name:'Education Boards Bangladesh',url:'https://educationboard.gov.bd/',detail:'Board examination notices and education-board information.'}],
+      'Australia':[{name:'Australian Curriculum, Assessment and Reporting Authority',url:'https://www.acara.edu.au/',detail:'National curriculum and assessment information; senior exams are state/territory based.'}],
+      'United States':[{name:'U.S. Department of Education',url:'https://www.ed.gov/',detail:'Federal education information. School exams are usually set by states, districts and exam providers.'}],
+      'Canada':[{name:'Government of Canada – Education',url:'https://www.canada.ca/en/services/benefits/education.html',detail:'Education information. School exams are set by provinces and territories.'}],
+      'Ireland':[{name:'State Examinations Commission',url:'https://www.examinations.ie/',detail:'State examination timetables and past examination material.'}]
+    };
+    function renderSources(){const c=countrySelect.value;const list=sources[c]||[];const global=[{name:'Cambridge International',url:'https://www.cambridgeinternational.org/exam-administration/',detail:'International examination administration and timetable information.'},{name:'Pearson Edexcel',url:'https://qualifications.pearson.com/en/support/support-topics/exams/exam-timetables.html',detail:'International qualification exam timetables.'}];$('officialSources').innerHTML=[...list,...global].map(x=>`<a class="source-link" href="${x.url}" target="_blank" rel="noopener">${esc(x.name)}<small>${esc(x.detail)}</small></a>`).join('');}
+    renderSources();countrySelect.addEventListener('change',renderSources);
+    function openOfficialSearch(kind){const country=countrySelect.value,grade=gradeSelect.value,year=$('examYear').value;const phrase=kind==='future'?'official exam timetable exam dates':'official past examination papers question papers marking schemes';const q=`${country} ${grade} ${year} ${phrase} education ministry examination board official`;const url='https://www.google.com/search?q='+encodeURIComponent(q);window.open(url,'_blank','noopener');$('examStatus').textContent=`Searching for ${kind==='future'?'upcoming exam dates':'past papers'} for ${grade} in ${country}. Check that each result belongs to an official education department or examination board. If no official timetable has been published, the date is not yet announced.`;}
+    $('futureExamBtn').addEventListener('click',()=>openOfficialSearch('future'));
+    $('pastPaperBtn').addEventListener('click',()=>openOfficialSearch('past'));
+  }
+
+  // Safe recursive-descent parser. Values are affine expressions: a*x + b.
+  function tokenize(str){
+    const tokens=str.replace(/[×]/g,'*').replace(/[÷]/g,'/').replace(/[−]/g,'-').replace(/,/g,'.').match(/(?:\d+(?:\.\d*)?|\.\d+)|[a-zA-Z]|[()+\-*/^=]/g);
+    if(!tokens||tokens.join('').replace(/\s/g,'')!==str.replace(/[×÷−,\s]/g,'').replace(/ /g,'')) throw Error('I could not read that expression. Use numbers, x, +, −, ×, ÷ and brackets.');
+    return tokens.map(t=>/^\d/.test(t)?{type:'num',v:Number(t)}:{type:/^[a-z]$/i.test(t)?'var':t,v:t});
+  }
+  function affineParse(str){
+    const t=tokenize(str);let i=0;
+    const peek=()=>t[i]?.type;
+    function primary(){
+      if(peek()==='+'||peek()==='-'){const sign=t[i++].type==='-'?-1:1;const a=primary();return [a[0]*sign,a[1]*sign];}
+      if(peek()==='num'){const n=t[i++].v;return [0,n];}
+      if(peek()==='var'){t[i++];return [1,0];}
+      if(peek()==='('){i++;const a=expr();if(peek()!==')')throw Error('Please check your brackets.');i++;return a;}
+      throw Error('Expected a number, x, or bracket.');
+    }
+    function term(){let a=primary();while(peek()==='*'||peek()==='/'||peek()==='num'||peek()==='var'||peek()==='('){const implicit=peek()==='num'||peek()==='var'||peek()==='(';const op=implicit?'*':t[i++].type,b=primary();if(op==='*'){if(a[0]&&b[0])throw Error('This solver supports linear equations, not multiplying x by x.');a=[a[0]*b[1]+b[0]*a[1],a[1]*b[1]];}else{if(b[0]||b[1]===0)throw Error('Division by zero or by an expression containing x is not supported.');a=[a[0]/b[1],a[1]/b[1]];}}return a;}
+    function expr(){let a=term();while(peek()==='+'||peek()==='-'){const op=t[i++].type,b=term(),s=op==='+'?1:-1;a=[a[0]+s*b[0],a[1]+s*b[1]];}return a;}
+    const out=expr();if(i!==t.length)throw Error('There is an extra symbol in the expression.');return out;
+  }
+  const fmt=n=>Number.isInteger(n)?String(n):String(Number(n.toFixed(6)));
+  function solveArithmetic(raw){
+    const val=affineParse(raw);if(Math.abs(val[0])>1e-10)throw Error('For arithmetic, enter numbers only. Use x for a linear equation with an equals sign.');
+    const result=val[1];
+    return {label:raw,steps:[['Write the expression',raw,'We will follow the order of operations: brackets, multiplication or division, then addition or subtraction.'],['Evaluate the expression',fmt(result),'Work through each operation in the correct order.']],answer:fmt(result)};
+  }
+  function solveEquation(raw){
+    const parts=raw.split('=');if(parts.length!==2)throw Error('Please enter one equation with one equals sign, such as 3x + 5 = 20.');
+    const L=affineParse(parts[0]),R=affineParse(parts[1]);
+    const a=L[0]-R[0],b=R[1]-L[1];
+    if(Math.abs(a)<1e-10)throw Error(Math.abs(b)<1e-10?'Both sides are already equal, so every value works.':'This equation has no solution.');
+    const x=b/a;
+    const left=fmt(L[0])+'x + '+fmt(L[1]),right=fmt(R[0])+'x + '+fmt(R[1]);
+    const steps=[
+      ['Simplify each side',`${parts[0].trim()} = ${parts[1].trim()}`,`The equation can be written as ${left} = ${right}.`],
+      ['Collect the x terms',`${fmt(a)}x = ${fmt(b)}`,'Move all terms containing x to the left and number terms to the right.'],
+      ['Divide to isolate x',`x = ${fmt(b)} ÷ ${fmt(a)}`,'Divide both sides by the coefficient of x.'],
+      ['Calculate',`x = ${fmt(x)}`,'Evaluate the division to find the value of x.'],
+      ['Check your answer',`x = ${fmt(x)}`,`Substitute ${fmt(x)} for x in the original equation. The two sides should be equal.`]
+    ];
+    return {label:raw,steps,answer:`x = ${fmt(x)}`};
+  }
+  function solveWord(raw){
+    const s=raw.toLowerCase();
+    let m;
+    if((m=s.match(/(?:costs?|price is|priced at)\s*(?:r)?\s*(\d+(?:\.\d+)?).{0,50}?\b(\d+)\s*(?:items?|notebooks?|pens?|books?|apples?)\b/)) || (m=s.match(/\b(\d+)\s*(?:items?|notebooks?|pens?|books?|apples?)\b.{0,40}?(?:each|per item).{0,20}?(?:r)?\s*(\d+(?:\.\d+)?)/))){
+      let qty,price;if(s.indexOf(m[0])>=0&&/costs?|price is|priced at/.test(m[0])){price=Number(m[1]);qty=Number(m[2]);}else{qty=Number(m[1]);price=Number(m[2]);}
+      const total=qty*price;return {label:raw,steps:[['Identify the information',`${qty} items at R${fmt(price)} each`,`We know the number of items and the price for one item.`],['Choose the operation',`${qty} × ${fmt(price)}`,'For equal prices, multiply the number of items by the price of one item.'],['Calculate',`R${fmt(total)}`,'Multiply to find the total cost.']],answer:`Total cost = R${fmt(total)}`};
+    }
+    const nums=(raw.match(/\d+(?:\.\d+)?/g)||[]).map(Number);
+    if(nums.length>=2){
+      let op,word;if(/\b(add|altogether|in total|more|gets|gain|combined)\b/.test(s)){op='+';word='addition';}
+      else if(/\b(left|remain|remaining|difference|fewer|less|spent|gave away|lost)\b/.test(s)){op='-';word='subtraction';}
+      else if(/\b(each|groups of|times|twice|triple|double)\b/.test(s)){op='*';word='multiplication';}
+      else if(/\bshare|shared|split|between|per person|equally|each gets\b/.test(s)){op='/';word='division';}
+      if(op){const a=nums[0],b=nums[1];if(op==='/'&&b===0)throw Error('You cannot divide by zero.');const r=op==='+'?a+b:op==='-'?a-b:op==='*'?a*b:a/b;return {label:raw,steps:[['Find the numbers',`${fmt(a)} and ${fmt(b)}`,'Pick out the two quantities in the question.'],['Choose the operation',`${fmt(a)} ${op} ${fmt(b)}`,`The wording suggests ${word}.`],['Calculate',fmt(r),'Apply the operation to get the result.']],answer:`Answer = ${fmt(r)}`};}
+    }
+    throw Error('I could not identify the operation in that word problem. Try writing a short question with the numbers and words such as altogether, left, each, or shared.');
+  }
+  function buildSteps(result){
+    currentSteps=result.steps;$('problemLabel').textContent=result.label;$('stepsList').innerHTML='';
+    currentSteps.forEach((s,i)=>{const el=document.createElement('div');el.className='step';el.dataset.step=i;el.hidden=true;el.innerHTML=`<div class="num">${i+1}</div><div><strong>${esc(s[0])}: ${esc(s[1])}</strong><p>${esc(s[2])}</p></div>`;$('stepsList').appendChild(el);});
+    visibleSteps=0;$('finalAnswer').hidden=true;$('stepsCard').hidden=false;showNext();
+  }
+  function showNext(){
+    const items=[...$('stepsList').children];
+    if(visibleSteps<items.length){items[visibleSteps].hidden=false;visibleSteps++;}
+    $('nextStep').disabled=visibleSteps>=items.length;$('nextStep').textContent=visibleSteps>=items.length?'All steps revealed':'Reveal next step';
+    if(visibleSteps>=items.length){const answer=$('finalAnswer');answer.hidden=false;answer.innerHTML=`<b>Final answer:</b> ${esc(window._studyAnswer||'')}`;}
+  }
+  $('nextStep').addEventListener('click',showNext);
+  $('showAll').addEventListener('click',()=>{[...$('stepsList').children].forEach(x=>x.hidden=false);visibleSteps=currentSteps.length;$('nextStep').disabled=true;$('nextStep').textContent='All steps revealed';$('finalAnswer').hidden=false;$('finalAnswer').innerHTML=`<b>Final answer:</b> ${esc(window._studyAnswer||'')}`;});
+  $('solveBtn').addEventListener('click',()=>{
+    const raw=$('mathInput').value.trim();if(!raw){$('mathStatus').textContent='Enter a maths question first.';return;}
+    try{
+      let result;
+      if(raw.includes('='))result=solveEquation(raw);
+      else if(/\b(what|how many|how much|altogether|each|left|remain|shared|split|cost|price|total)\b/i.test(raw)&&/\d/.test(raw))result=solveWord(raw);
+      else result=solveArithmetic(raw);
+      window._studyAnswer=result.answer;buildSteps(result);$('mathStatus').textContent='Your solution is ready. Reveal each step when you are ready.';
+      $('stepsCard').scrollIntoView({behavior:'smooth',block:'start'});
+    }catch(e){$('stepsCard').hidden=true;$('mathStatus').textContent=e.message||'Something went wrong. Check your question and try again.';}
+  });
+  $('clearMath').addEventListener('click',()=>{$('mathInput').value='';$('mathStatus').textContent='';$('stepsCard').hidden=true;});
+  document.querySelectorAll('.example').forEach(b=>b.addEventListener('click',()=>{$('mathInput').value=b.dataset.example;}));
+})();
+</script>
+</body>
+</html>
